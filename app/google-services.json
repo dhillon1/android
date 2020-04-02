@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "425638006546",
+    "firebase_url": "https://wednesday-7b0eb.firebaseio.com",
+    "project_id": "wednesday-7b0eb",
+    "storage_bucket": "wednesday-7b0eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425638006546:android:b7b37f38562b9b287f2dcb",
+        "android_client_info": {
+          "package_name": "com.sd.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "425638006546-j48h4h6sikkpsf80st3jpkprjguiit0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJQc4jOj1tmHGWEf9o5DUrREqFPjeEZ8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425638006546-j48h4h6sikkpsf80st3jpkprjguiit0j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "425638006546-be5rsohe4v8loc0q30djfv8i46leldkf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.centennialcollege.wednesday"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
