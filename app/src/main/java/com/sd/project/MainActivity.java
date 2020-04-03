@@ -1,15 +1,19 @@
 package com.sd.project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private String info;
     private TextView ip,city,region,country,loc,timezone,demoInfo;
     private ConstraintLayout constraintLayoutDemo;
+    private Button demoMap;
+    private String location;
 
 
 
@@ -53,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         loc = findViewById(R.id.demoLocation);
         timezone = findViewById(R.id.demoTimezone);
         demoInfo = findViewById(R.id.demoInfo);
+        demoMap = findViewById(R.id.demoMap);
         constraintLayoutDemo.setVisibility(GONE);
         demoInfo.setVisibility(GONE);
 
@@ -87,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                                     country.setText(response4.getString("country"));
                                     loc.setText(response4.getString("loc"));
                                     timezone.setText(response4.getString("timezone"));
+                                    location = response4.getString("loc");
 
                                 } catch (JSONException e) {
                                     Toast.makeText(MainActivity.this,e.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
@@ -126,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                         new Response.Listener<JSONObject>()
                         {
                             @Override
-                            public void onResponse(JSONObject response) {
+                            public void onResponse(final JSONObject response) {
 
                                 try {
                                     final String name = response.getString("ip");
@@ -145,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                                                         country.setText(response4.getString("country"));
                                                         loc.setText(response4.getString("loc"));
                                                         timezone.setText(response4.getString("timezone"));
+                                                        location = response4.getString("loc");
 
 
                                                     } catch (JSONException e) {
@@ -182,6 +191,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        demoMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this,MapActivity.class);
+                i.putExtra("location",location);
+                startActivity(i);
+
+            }
+        });
     }
 
     @Override
@@ -191,5 +210,18 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuHistory:
+                startActivity(new Intent(MainActivity.this, HistoryActivity.class));
+                return true;
+            case R.id.menuLogout:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
