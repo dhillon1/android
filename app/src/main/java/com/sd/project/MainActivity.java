@@ -25,10 +25,17 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.view.View.GONE;
 
@@ -41,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayoutDemo;
     private Button demoMap;
     private String location;
+    private FirebaseFirestore firebaseFirestore;
 
 
 
@@ -62,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         demoMap = findViewById(R.id.demoMap);
         constraintLayoutDemo.setVisibility(GONE);
         demoInfo.setVisibility(GONE);
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
 
         searchIp.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +104,31 @@ public class MainActivity extends AppCompatActivity {
                                     loc.setText(response4.getString("loc"));
                                     timezone.setText(response4.getString("timezone"));
                                     location = response4.getString("loc");
+
+                                    Map<String, Object> data = new HashMap<>();
+                                    data.put("ip", response4.getString("ip"));
+                                    data.put("city", response4.getString("city"));
+                                    data.put("region",response4.getString("region"));
+                                    data.put("country", response4.getString("country"));
+                                    data.put("loc", response4.getString("loc"));
+                                    data.put("timezone",response4.getString("timezone"));
+                                    String timestamp  = String.valueOf(System.currentTimeMillis());
+                                    data.put("timestamp",timestamp);
+
+                                    firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid()).document(timestamp)
+                                            .set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                        }
+                                    }).
+                                            addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                }
+                                            });
+
 
                                 } catch (JSONException e) {
                                     Toast.makeText(MainActivity.this,e.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
@@ -154,10 +188,31 @@ public class MainActivity extends AppCompatActivity {
                                                         loc.setText(response4.getString("loc"));
                                                         timezone.setText(response4.getString("timezone"));
                                                         location = response4.getString("loc");
+                                                        Map<String, Object> data = new HashMap<>();
+                                                        data.put("ip", response4.getString("ip"));
+                                                        data.put("city", response4.getString("city"));
+                                                        data.put("region",response4.getString("region"));
+                                                        data.put("country", response4.getString("country"));
+                                                        data.put("loc", response4.getString("loc"));
+                                                        data.put("timezone",response4.getString("timezone"));
+                                                        String timestamp = String.valueOf(System.currentTimeMillis());
+                                                        data.put("timestamp",timestamp);
 
+                                                        firebaseFirestore.collection(FirebaseAuth.getInstance().getCurrentUser().getUid()).document(timestamp)
+                                                                .set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+
+                                                            }
+                                                        }).
+                                                                addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+
+                                                                    }
+                                                                });
 
                                                     } catch (JSONException e) {
-                                                        Toast.makeText(MainActivity.this,e.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
 
                                                     }
                                                 }
@@ -166,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
                                             {
                                                 @Override
                                                 public void onErrorResponse(VolleyError error) {
-                                                    Toast.makeText(MainActivity.this, "1",Toast.LENGTH_SHORT).show();
+
                                                 }
                                             }
                                     );
